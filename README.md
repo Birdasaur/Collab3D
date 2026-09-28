@@ -14,8 +14,8 @@ Run the server in one JVM and each client in a separate JVM. Clients connect to
 SimEthereal                    1.8.0
 jme3-networking / SpiderMonkey 3.9.0-stable
 jme3-core                      3.9.0-stable
-Java                           21
-JavaFX                         21.0.9
+Java                           27
+JavaFX                         27
 ```
 
 The POM deliberately overrides SimEthereal's old transitive jME dependency and
@@ -42,7 +42,7 @@ rule is enabled so that a mixed jME dependency graph is rejected.
 
 Requirements:
 
-- JDK 21
+- JDK 27
 - Maven 3.9 or later
 
 ```text

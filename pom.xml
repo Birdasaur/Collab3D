@@ -20,7 +20,7 @@
         <!-- ============================================================= -->
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.release>27</maven.compiler.release>
 
         <!-- ============================================================= -->
         <!-- Application dependency versions                               -->
@@ -29,7 +29,7 @@
         <jme.version>3.9.0-stable</jme.version>
         <simethereal.version>1.8.0</simethereal.version>
         <simmath.version>1.6.0</simmath.version>
-        <javafx.version>21.0.9</javafx.version>
+        <javafx.version>27</javafx.version>
         <slf4j.version>1.7.36</slf4j.version>
 
         <!-- ============================================================= -->
@@ -302,7 +302,7 @@
                                 <dependencyConvergence/>
 
                                 <requireJavaVersion>
-                                    <version>[21,)</version>
+                                    <version>[27,)</version>
                                 </requireJavaVersion>
 
                             </rules>

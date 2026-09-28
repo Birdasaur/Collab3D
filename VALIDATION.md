@@ -5,7 +5,7 @@
 - Parsed `pom.xml` as well-formed XML.
 - Compiled every Java source file using JDK 17 against local API stubs covering
   the JavaFX and SpiderMonkey symbols used by the project. The project itself
-  targets JDK 21. This validates Java syntax, package structure, and internal
+  targets JDK 27. This validates Java syntax, package structure, and internal
   source references.
 - Verified separate server and client `main()` entry points.
 - Verified all SimEthereal-specific assumptions are confined to
