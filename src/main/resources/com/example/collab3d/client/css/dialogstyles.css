@@ -1,0 +1,795 @@
+/*
+    Author: Sean Phillips (mostly)
+*/
+@font-face {
+    font-family: 'Roboto Black';
+    src: url('Roboto-Black.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Regular';
+    src: url('Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Thin';
+    src: url('Roboto-Thin.ttf');
+}
+
+.dialog-pane {
+    -grey-ish: rgba(110, 116, 156, .7);
+    -white-ish: rgba(255, 255, 255, .20);
+    -black-ish: rgba(0, 0, 0, 0.8);
+    -clear-ish: rgba(0, 0, 0, 0.3);
+    -orange-ish: rgba(215, 156, 88, .90);
+    -sheer-blue: #55C4FE66;
+    -lighter-orange-ish: rgba(230, 218, 137, 1.0);
+    -green-screen-text: rgba(0, 250, 0, 1.0);
+    -var-content_background_color: #6495ED05; /* almost transparent */
+    -fx-background-color: -var-content_background_color;
+    -var-accent_color: #0078D7;
+    -var-text_color: aliceblue;
+    -fx-text-fill: -var-text_color;
+    -fx-border-color: #00FFFFAA;
+}
+
+.dialog-pane > *.button-bar > *.container {
+    -fx-background-color: -sheer-blue;
+}
+
+.dialog-pane:header .header-panel {
+    -fx-background-color: #1F1F1FAA;
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-font-style: italic;
+    -fx-font-size: 16pt;
+    -fx-text-fill: -var-text_color;
+}
+
+.dialog-pane > .content {
+    -fx-background-color: -sheer-blue;
+    -fx-font-weight: bold;
+    -fx-text-fill: -var-text_color;
+    -fx-font-size: 16pt;
+    -fx-font-family: Helvetica, Arial, sans-serif;
+}
+
+.dialog-pane > .content .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -var-text_color;
+    -fx-font-size: 16pt;
+    -fx-font-family: Helvetica, Arial, sans-serif;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Check Box                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.dialog-pane .check-box {
+    -fx-text-fill: white;
+}
+
+/*unselected*/
+.dialog-pane .check-box > .box {
+    -fx-background-color: #D1D1D1;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: #D1D1D1;
+    -fx-border-width: 2px;
+    -fx-borders-style: solid;
+    -fx-padding: 1;
+}
+
+.dialog-pane .check-box > .box > .mark {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 7px;
+    -fx-shape: "M9.005,17.766l13.759,14.739h1.716L49.02,0l10.298,8.488L25.997,50.453h-3.629L0,26.897L9.005,17.766z"
+}
+
+.dialog-pane .check-box:hover > .box {
+    -fx-border-color: #A1E1E1;
+    -fx-background-color: #E1E1E1;
+}
+
+.dialog-pane .check-box:focused > .box {
+    -fx-background-color: #D1D1D1;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: white, #D1D1D1;
+    -fx-border-width: 1, 2;
+    -fx-border-style: segments(1, 2), solid;
+    -fx-border-insets: -3, 0;
+}
+
+.dialog-pane .check-box:focused:hover > .box {
+    -fx-border-color: white, #E1E1E1;
+    -fx-background-color: #E1E1E1;
+}
+
+.dialog-pane .check-box:pressed > .box {
+    -fx-border-color: white, white;
+
+}
+
+.dialog-pane .check-box:selected > .box > .mark {
+    -fx-background-color: black;
+}
+
+.dialog-pane .check-box:indeterminate > .box > .mark {
+    -fx-background-color: black;
+    -fx-background-insets: 2.8;
+    -fx-padding: 7px;
+    -fx-shape: null;
+}
+
+.dialog-pane .check-box:disabled {
+    -fx-opacity: 0.4;
+}
+
+.dialog-pane .check-box:disabled > .box {
+    -fx-border-color: white;
+    -fx-background-color: white;
+}
+
+.dialog-pane .check-box:disabled:selected > .box > .mark {
+    -fx-background-color: #4C4C4C;
+    -fx-opacity: 0.5;
+}
+
+.dialog-pane .check-box:armed > .box {
+    -fx-background-color: transparent, white;
+    -fx-background-insets: -1, 2;
+    -fx-background-radius: 0, 0;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button                                                                      *
+ *                                                                             *
+ ******************************************************************************/
+
+.dialog-pane .button, .dialog-pane .toggle-button {
+    -var-background_color: #333333;
+    -var-background_pressed_color: #666666;
+    -var-border_hover_color: #858585;
+    -var-text_color: white;
+    -var-default_button_text_color: white;
+    -var-focus_ring_border_color: white;
+}
+
+.dialog-pane .button {
+    -var-border_hover_default_color: derive(-var-accent_color, 70%);
+}
+
+.dialog-pane .toggle-button {
+    -var-border_hover_selected_color: derive(-var-accent_color, 70%);
+}
+
+.dialog-pane .button, .dialog-pane .toggle-button {
+    -shrink-animate-on-press: true;
+}
+
+.dialog-pane .button, .dialog-pane .toggle-button {
+    -fx-padding: 0.25em 1.666666em 0.25em 1.666666em; /*3 20 3 20*/
+    -fx-border-color: transparent;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: -var-background_color;
+    -fx-font-family: "Segoe UI Semilight";
+    -fx-font-size: 1.0em;
+    -fx-text-fill: -var-text_color;
+}
+
+.dialog-pane .button:hover, .dialog-pane .toggle-button:hover {
+    -fx-border-color: -var-border_hover_color;
+}
+
+.dialog-pane .button:pressed, .dialog-pane .toggle-button:pressed {
+    -fx-border-color: -var-background_pressed_color;
+    -fx-background-color: -var-background_pressed_color;
+}
+
+.dialog-pane .button:focused, .dialog-pane .toggle-button:focused {
+    -fx-border-color: transparent, -var-focus_ring_border_color;
+    -fx-border-width: 1, 1;
+    -fx-border-style: solid, segments(1, 2);
+    -fx-border-radius: 0, 0;
+    -fx-border-insets: 1 1 1 1, 0;
+}
+
+.dialog-pane .button:disabled, .dialog-pane .button:default:disabled, .dialog-pane .toggle-button:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: -var-background_color;
+    -fx-text-fill: -var-text_color;
+}
+
+.dialog-pane .button:default {
+    -fx-background-color: -var-accent_color;
+    -fx-text-fill: -var-default_button_text_color;
+}
+
+.dialog-pane .button:default:hover {
+    -fx-border-color: -var-border_hover_default_color;
+}
+
+.dialog-pane .button:default:pressed {
+    -fx-background-color: derive(-var-accent_color, -40%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * choicebox                                                                    *
+ *                                                                             *
+ ******************************************************************************/
+.dialog-pane .choice-box {
+    -fx-background-color: transparent;
+    -fx-padding: 0em 0.166667em 0em 0.166667em; /* 0 2px 0 2px*/
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-border-width: 2px;
+    -fx-borders-style: solid;
+    /*-fx-border-color: aliceblue;*/
+    -fx-border-color: darkslategray;
+}
+
+/* Text color of non-focused items in the list */
+.dialog-pane .choice-box .menu-item > .label {
+    -fx-text-fill: skyblue;
+}
+
+/*
+.choice-box .menu-item:hover > .label { -fx-text-fill: #a1e1e1; }
+.choice-box .menu-item:selected > .label { -fx-text-fill: aliceblue; }
+*/
+.dialog-pane .choice-box .label {
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: aliceblue;
+    -fx-opacity: 0.8;
+}
+
+.dialog-pane .choice-box .label:hover {
+    -fx-text-fill: aliceblue;
+}
+
+.dialog-pane .choice-box:hover {
+    -fx-background-color: transparent, transparent, transparent, transparent;
+    -fx-border-color: #A1E1E1;
+}
+
+.dialog-pane .choice-box:focused {
+    -fx-background-color: transparent, transparent, transparent, transparent;
+    -fx-border-color: #A1E1E1
+}
+
+.dialog-pane .choice-box:focused:hover {
+    -fx-background-color: transparent, transparent, transparent, transparent;
+    -fx-border-color: #A1E1E1
+}
+
+.dialog-pane .choice-box:focused:hover .arrow {
+    -fx-border-color: #55C4FE;
+    -fx-background-color: #55C4FE;
+}
+
+.dialog-pane .choice-box:hover .arrow {
+    -fx-border-color: #55C4FE;
+    -fx-background-color: #55C4FE;
+}
+
+.dialog-pane .choice-box:disabled {
+    -fx-opacity: .4;
+}
+
+/* ------- OPEN BUTTON ------- */
+.dialog-pane .choice-box .arrow-button {
+    -fx-background-color: transparent, transparent, transparent;
+}
+
+/* ------- ARROW* ------- */
+.dialog-pane .choice-box .arrow {
+    -fx-padding: 0.236110875em 0.333333em 0.236110875em 0.333333em; /* (2/3 * 4.25) 4 (2/3 * 4.25) 4 */
+    -fx-shape: "M-78,640l-6-5.5v-3l6,5l0,0l6-5v3L-78,640L-78,640z";
+    -fx-background-insets: 0 0 0 0, 0;
+    -fx-background-color: silver;
+}
+
+/********************************* Menu Item ***********************************/
+
+.dialog-pane .menu-item {
+    text_color: white;
+    menu_background_color: #2B2B2B;
+    graphic_color: #AAAAAA;
+    hover_color: #404040;
+    pressed_color: #555555;
+    -fx-text-fill: text_color;
+    -fx-background-color: menu_background_color;
+    -fx-padding: 0.583333em 1em 0.583333em 1em; /*7 12 7 12 */
+}
+
+.dialog-pane .menu-item > .right-container,
+.dialog-pane .menu-item > .left-container {
+    -fx-background-color: menu_background_color;
+}
+
+.dialog-pane .menu-item .label {
+    -fx-padding: 0em 1.333333em 0em 0em; /* 0 16 0 0 */
+    -fx-text-fill: text_color;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 1.333333em; /* 16 */
+}
+
+.dialog-pane .menu-item > .graphic-container {
+    -fx-padding: 0em 0.75em 0em 0em; /* 0 9 0 0 */
+}
+
+.dialog-pane .radio-menu-item:checked > .left-container > .radio {
+    -fx-shape: "M17.939,5.439L7.5,15.889l-5.439-5.449l0.879-0.879L7.5,14.111 l9.561-9.551L17.939,5.439z";
+
+    -fx-padding: 0.416667em 0.583333em 0.416667em 0.583333em; /* 5 7 5 7 */
+    -fx-scale-shape: true;
+}
+
+.dialog-pane .check-menu-item:checked > .left-container > .check {
+    -fx-shape: "M17.939,5.439L7.5,15.889l-5.439-5.449l0.879-0.879L7.5,14.111 l9.561-9.551L17.939,5.439z";
+
+    -fx-padding: 0.416667em 0.583333em 0.416667em 0.583333em;; /* 5 7 5 7 */
+    -fx-scale-shape: true;
+}
+
+.dialog-pane .check-menu-item:checked > .left-container {
+    -fx-padding: 0em 1em 0em 0.5em; /* 0 12 0 6 */
+}
+
+.dialog-pane .radio-menu-item:checked > .left-container {
+    -fx-padding: 0em 1em 0em 0.5em; /* 0 12 0 6 */
+}
+
+.dialog-pane .menu > .right-container > .arrow {
+    -fx-padding: 0.458em 0.333333em 0.458em 0.333333em; /* >5 4 >5 4 */
+    -fx-shape: "M8.06,20.938L7,20l8-8L7,4l1.06-0.938L16.917,12L8.06,20.938z";
+    -fx-scale-shape: true;
+}
+
+.dialog-pane .radio-menu-item:checked > .left-container > .radio,
+.dialog-pane .check-menu-item:checked > .left-container > .check,
+.dialog-pane .menu > .right-container > .arrow {
+    -fx-background-color: graphic_color;
+}
+
+/* hover */
+.dialog-pane .menu-item:hover,
+.dialog-pane .menu-item:focused,
+.dialog-pane .menu-item:hover > .right-container,
+.dialog-pane .menu-item:hover > .left-container,
+.dialog-pane .menu-item:focused > .right-container,
+.dialog-pane .menu-item:focused > .left-container {
+    -fx-background-color: hover_color;
+}
+
+/* pressed */
+.dialog-pane .menu-item:pressed,
+.dialog-pane .menu-item:pressed > .right-container,
+.dialog-pane .menu-item:pressed > .left-container {
+    -fx-background-color: pressed_color;
+}
+
+/* disabled */
+.dialog-pane .menu-item:disabled:hover,
+.dialog-pane .menu-item:disabled:focused,
+.dialog-pane .menu-item:disabled:pressed {
+    -fx-background-color: transparent;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ColorPicker                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+
+.dialog-pane .color-palette {
+    popup_background_color: #2B2B2B;
+    popup_border_color: #767676;
+    -fx-background-radius: 0;
+    -fx-background-color: popup_background_color;
+    -fx-border-color: popup_border_color;
+}
+
+.dialog-pane .custom-color-dialog {
+    controls_background_color: #2B2B2B;
+    controls_border_color: #767676;
+    -fx-background-color: dialog_background_color;
+}
+
+.dialog-pane .custom-color-dialog .controls-pane .customcolor-controls-background {
+    -fx-background-color: controls_border_color, controls_background_color;
+}
+
+/* With Button styleclass */
+.dialog-pane .color-picker.button {
+    button_background_color: #333333;
+    background_pressed_color: #666666;
+    border_hover_color: #858585;
+    text_color: white;
+    focus_ring_border_color: white;
+    -fx-border-color: transparent;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: button_background_color;
+    -fx-font-family: "Segoe UI";
+    -fx-text-fill: text_color;
+}
+
+.dialog-pane .color-picker.button:hover,
+.dialog-pane .color-picker.button:focused:hover {
+    -fx-border-color: border_hover_color;
+}
+
+.dialog-pane .color-picker.button:pressed,
+.dialog-pane .color-picker.button:focused:pressed {
+    -fx-border-color: background_pressed_color;
+    -fx-background-color: background_pressed_color;
+}
+
+.dialog-pane .color-picker.button:focused {
+    -fx-border-color: transparent, focus_ring_border_color;
+    -fx-border-width: 1, 1;
+    /*noinspection CssInvalidFunction*/
+    -fx-border-style: solid, segments(1, 2);
+    -fx-border-radius: 0, 0;
+    -fx-border-insets: 1 1 1 1, 0;
+}
+
+.dialog-pane .color-picker.button:showing {
+    -fx-border-color: transparent, focus_ring_border_color;
+    -fx-background-color: background_pressed_color;
+    -fx-border-width: 1, 1;
+    /*noinspection CssInvalidFunction*/
+    -fx-border-style: solid, segments(1, 2);
+    -fx-border-radius: 0, 0;
+    -fx-border-insets: 1 1 1 1, 0;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Combo Box                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.dialog-pane .combo-box-base {
+    -var-border_color: #666666;
+    -var-border_hover_color: #999999;
+    -var-border_focused_color: white;
+    -var-border_pressed_color: #666666;
+    -var-background_color: #111111;
+    -var-background_pressed_color: #333333;
+    -var-arrow_color: white;
+    -var-text_color: white;
+    -var-list_cell_color: #2B2B2B;
+    -var-list_cell_hover_color: #545454;
+    -var-list_cell_border_color: #767676;
+
+    -fx-background-color: transparent, -var-border_color, transparent, -var-background_color;
+    -fx-background-radius: 0, 0, 0, 0;
+    -fx-padding: 0.166667em 0.166667em 0.166667em 0.166667em; /* 2 2px 2 2px*/
+
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 1.333333em; /* 16 */
+}
+
+.dialog-pane .combo-box-base > .list-cell {
+    -fx-text-fill: -var-text_color;
+}
+
+.dialog-pane .combo-box-base:hover {
+    -fx-background-color: transparent, -var-border_hover_color, transparent, -var-background_color;
+}
+
+.dialog-pane .combo-box-base:focused {
+    -fx-background-color: transparent, -var-border_focused_color, transparent, -var-background_color;
+    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-background-radius: 0, 0, 0, 0;
+}
+
+.dialog-pane .combo-box-base:focused:hover {
+    -fx-background-color: transparent, -var-border_hover_color, transparent, -var-background_color;
+}
+
+.dialog-pane .combo-box-base:pressed, .dialog-pane .combo-box-base:focused:pressed {
+    -fx-background-color: transparent, -var-border_pressed_color, transparent, -var-background_pressed_color;
+}
+
+.dialog-pane .combo-box-base:disabled {
+    -fx-opacity: .4;
+}
+
+/* ------- OPEN BUTTON ------- */
+.dialog-pane .combo-box-base > .arrow-button {
+    -fx-background-color: transparent, transparent, transparent;
+}
+
+/* ------- ARROW ------- */
+.dialog-pane .combo-box-base > .arrow-button > .arrow {
+    -fx-padding: 3.5px 6px 3.5px 6px;
+    -fx-shape: "M21.361,12.736l0.527,0.527L16,19.152l-5.889-5.889l0.527-0.527L16,18.098L21.361,12.736z";
+    -fx-background-insets: 0 0 0 0, 0;
+    -fx-background-color: -var-arrow_color;
+}
+
+/* LIST (Popup)*/
+.dialog-pane .combo-box-popup > .list-view {
+    -fx-effect: null;
+    -fx-border-color: -var-list_cell_border_color;
+}
+
+.dialog-pane .combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 11pt;
+    -fx-padding: 4 0 4 5;
+    -fx-background-color: -var-list_cell_color;
+}
+
+.dialog-pane .combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover {
+    -fx-background-color: -var-list_cell_hover_color;
+    -fx-text-fill: -var-text_color;
+}
+
+.dialog-pane .combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
+    -fx-background-color: derive(-var-accent_color, 90%);
+    -fx-text-fill: #111111;
+}
+
+.dialog-pane .combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected:hover {
+    -fx-background-color: derive(-var-accent_color, 70%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * GridPane                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.dialog-pane .grid-pane {
+    -fx-background-color: transparent;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * TextBox (and PasswordBox)                                                   *
+ *                                                                             *
+ ******************************************************************************/
+.dialog-pane .text-field {
+    -fx-background-color: #FFFFFF77;
+    /*-fx-background-color: darkslategray;*/
+    -fx-padding: 0em 0.166667em 0em 0.166667em; /* 0 2px 0 2px*/
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 16pt;
+    -fx-border-width: 1px;
+    -fx-border-color: #D1D1D122;
+    -fx-borders-style: solid;
+}
+
+.dialog-pane .text-input {
+    /*-fx-background-radius: 0, 0;*/
+    -fx-background-color: darkslategray;
+    /*-fx-background-insets: 0;*/
+    -fx-prompt-text-fill: #818181;
+    -fx-highlight-fill: #008287;
+    -fx-text-fill: aliceblue;
+}
+
+.dialog-pane .text-input:hover {
+    -fx-background-color: #55C4FE;
+    -fx-text-fill: aliceblue;
+    -fx-prompt-text-fill: aliceblue;
+}
+
+.dialog-pane .text-input:focused {
+    -fx-background-color: #5C5C5C, white;
+    -fx-text-fill: black;
+}
+
+.dialog-pane .text-input > Pane {
+    -fx-padding: 0.333333em 0.583em 0.333333em 0em; /*4 7 4 0 */
+}
+
+.dialog-pane .text-input > .right-button {
+    -fx-cursor: default;
+    -fx-background-insets: -0.1666665em -0.45em -0.1666665em -0.45em; /*4 7 4 7 -> this values are subtracted by 2px in em because of the border of the textfield */
+}
+
+.dialog-pane .text-field > .right-button > .right-button-graphic {
+    -fx-shape: "M221.738,305.873l6.135,6.16l-2.875,2.863l-6.135-6.159l-6.263,6.237l-2.864-2.875l6.263-6.238l-6.177-6.202l2.875-2.863l6.177,6.201l6.244-6.22l2.864,2.876L221.738,305.873z";
+    -fx-padding: 0.5em 0.5em; /*TODO: put the real number here 18 18 */
+    -fx-background-color: black;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ListView                                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.dialog-pane .list-view {
+    -fx-text-fill: aliceblue;
+    -fx-background-color: transparent;
+    -fx-font-size: 12pt;
+}
+
+.dialog-pane .list-cell {
+    -var-text_color: white;
+    -var-border_color: #494949;
+    /*-var-arrow_color: #6495ED;  CornflowerBlue*/
+    /*    -var-content_background_color: #6495ED88;
+        -var-content_background_odd_color: #4a9ec388;*/
+    -var-content_background_color: #6495ED22;
+    -var-content_background_odd_color: transparent;
+    -fx-background-color: -var-content_background_color;
+    -fx-text-fill: -var-text_color;
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.dialog-pane .list-cell:odd {
+    -fx-background-color: -var-content_background_odd_color;
+}
+
+.dialog-pane .list-cell:filled:selected:focused,
+.dialog-pane .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+    /*-fx-text-fill: aliceblue;*/
+}
+
+.dialog-pane .list-cell:filled:hover {
+    -fx-background-color: #55C4FE;
+    /*-fx-text-fill: aliceblue;*/
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Covalent                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.dialog-pane .path-window-background {
+
+    /*-fx-background-color: -clear-ish;*/
+    /*    -fx-border-color: -white-ish;
+        -fx-border-style: solid;
+        -fx-border-insets: 6 6 6 6;
+        -fx-border-width: 1.5;
+        -fx-border-radius: 5;*/
+
+}
+
+.dialog-pane .outer-path-frame {
+    -fx-fill: -clear-ish;
+    -fx-stroke: -grey-ish;
+    /*-fx-stroke: rgba(255, 255, 255, .9);*/
+    -fx-stroke-type: inside;
+    -fx-stroke-width: 2;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+}
+
+.dialog-pane .window-header {
+    -fx-background-color: -grey-ish;
+}
+
+.dialog-pane .window-header-text {
+    -fx-font-family: "Roboto Regular";
+    -fx-font-weight: 300;
+    -fx-font-size: 12;
+    -fx-fill: blue;
+}
+
+.dialog-pane .window-header-minimize-button {
+    -fx-fill: #FFFFFFAA;
+    -fx-stroke: -grey-ish;
+    -fx-width: 50;
+    -fx-height: 10;
+}
+
+.dialog-pane .window-header-minimize-button:hover {
+    -fx-fill: linear-gradient(to bottom, #FFFFFF77 10%, #55C4FE55 50%, #55C4FE 90%);
+}
+
+.dialog-pane .window-header-maximize-button {
+    -fx-fill: #0000FFAA;
+    -fx-stroke: -grey-ish;
+    -fx-width: 50;
+    -fx-height: 10;
+}
+
+.dialog-pane .window-header-maximize-button:hover {
+    -fx-fill: linear-gradient(to bottom, #0000FF77 10%, #55C4FE55 50%, #55C4FE 90%);
+}
+
+.dialog-pane .window-header-close-button {
+    -fx-fill: #FF0000AA;
+    -fx-stroke: -grey-ish;
+    -fx-width: 50;
+    -fx-height: 10;
+}
+
+.dialog-pane .window-header-close-button:hover {
+    -fx-fill: linear-gradient(to bottom, #FF000077 10%, #55C4FE55 50%, #55C4FE 90%);
+}
+
+.dialog-pane .window-accent-shape {
+    -fx-fill: -lighter-orange-ish;
+    -fx-stroke: -lighter-orange-ish;
+    -fx-stroke-width: 1;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+}
+
+.dialog-pane .left-tab-shape {
+    -fx-fill: -grey-ish;
+    -fx-stroke: -grey-ish;
+    -fx-stroke-width: 1;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+}
+
+.dialog-pane .main-title-text {
+    -fx-font-family: "Roboto Black";
+    -fx-font-weight: 900;
+    -fx-font-size: 20;
+    -fx-fill: aliceblue;
+}
+
+.dialog-pane .main-title-text2 {
+    -fx-font-family: "Roboto Regular";
+    -fx-font-weight: 300;
+    -fx-font-size: 16;
+    -fx-fill: -grey-ish;
+}
+
+.dialog-pane .main-title-display {
+    -fx-background-color: -black-ish;
+}
+
+.dialog-pane .main-title-path {
+    /*    -fx-background-color: rgba(223,172,100, .90); */
+    /*    -fx-fill: -orange-ish;*/
+
+    -fx-fill: -sheer-blue;
+    -fx-stroke: -grey-ish;
+    -fx-stroke-type: inside;
+    -fx-stroke-width: 1;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+}
+
+.dialog-pane .main-content-view {
+    /*
+        -fx-background-color: red;
+
+        -fx-border-color: white;
+        -fx-border-style: solid;
+        -fx-border-insets: 6 6 6 6;
+        -fx-border-width: 1.5;
+        -fx-border-radius: 5;
+    */
+}
+
+.dialog-pane .main-content-inner-path {
+    -fx-fill: -clear-ish;
+    /*-fx-fill: blue;*/
+    -fx-stroke: -grey-ish;
+    -fx-stroke-type: inside;
+    -fx-stroke-width: 2;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+}
+
+.dialog-pane .main-content-pane {
+    -fx-padding: 15;
+}

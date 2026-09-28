@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+             http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>spidermonkey-simethereal-javafx-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>SpiderMonkey + SimEthereal JavaFX 3D Demo</name>
+
+    <properties>
+
+        <!-- ============================================================= -->
+        <!-- General build configuration                                   -->
+        <!-- ============================================================= -->
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+
+        <!-- ============================================================= -->
+        <!-- Application dependency versions                               -->
+        <!-- ============================================================= -->
+
+        <jme.version>3.9.0-stable</jme.version>
+        <simethereal.version>1.8.0</simethereal.version>
+        <simmath.version>1.6.0</simmath.version>
+        <javafx.version>21.0.9</javafx.version>
+        <slf4j.version>1.7.36</slf4j.version>
+
+        <!-- ============================================================= -->
+        <!-- Maven plugin versions                                         -->
+        <!-- ============================================================= -->
+
+        <compiler.plugin.version>3.15.0</compiler.plugin.version>
+        <enforcer.plugin.version>3.6.2</enforcer.plugin.version>
+        <exec.plugin.version>3.5.1</exec.plugin.version>
+        <dependency.plugin.version>3.11.0</dependency.plugin.version>
+        <resources.plugin.version>3.5.0</resources.plugin.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+
+        <!-- ============================================================= -->
+        <!-- Main classes                                                  -->
+        <!-- ============================================================= -->
+
+        <client.main.class>
+            com.example.collab3d.client.ClientMain
+        </client.main.class>
+
+        <!--
+            Native packaging intentionally uses a non-JavaFX launcher.
+            See ClientLauncher.java.
+        -->
+        <client.launcher.class>
+            com.example.collab3d.client.ClientLauncher
+        </client.launcher.class>
+
+        <server.main.class>
+            com.example.collab3d.server.ServerMain
+        </server.main.class>
+
+        <!-- ============================================================= -->
+        <!-- Normal development-run arguments                              -->
+        <!-- ============================================================= -->
+
+        <client.args></client.args>
+
+        <!-- ============================================================= -->
+        <!-- Native packaging                                              -->
+        <!-- ============================================================= -->
+
+        <!--
+            app-image requires no external Windows installer technology.
+            It creates a directory containing the native executable and its
+            private runtime.
+
+            Override with:
+
+                -Djpackage.type=exe
+
+            to build a Windows installer when the required Windows packaging
+            tools are installed.
+        -->
+        <jpackage.type>app-image</jpackage.type>
+
+        <!--
+            jpackage requires a numeric application version rather than the
+            Maven SNAPSHOT version.
+        -->
+        <jpackage.app.version>1.0.0</jpackage.app.version>
+
+        <jpackage.vendor>Collab3D Demo</jpackage.vendor>
+
+        <client.native.name>Collab3DClient</client.native.name>
+        <server.native.name>Collab3DServer</server.native.name>
+
+        <!--
+            Package input directories contain the application JAR plus all
+            runtime dependency JARs.
+        -->
+        <client.package.input>
+            ${project.build.directory}/client-input
+        </client.package.input>
+
+        <server.package.input>
+            ${project.build.directory}/server-input
+        </server.package.input>
+
+        <!-- Custom jlink runtime images. -->
+        <client.runtime.image>
+            ${project.build.directory}/client-runtime
+        </client.runtime.image>
+
+        <server.runtime.image>
+            ${project.build.directory}/server-runtime
+        </server.runtime.image>
+
+        <!--
+            JDK modules retained in the custom client runtime.
+
+            JavaFX itself remains in the packaged Maven dependency JARs.
+            These are the JDK modules needed by JavaFX and the networking
+            stack, with a small amount of additional headroom.
+        -->
+        <client.jlink.modules>
+            java.base,java.desktop,java.logging,java.management,java.naming,java.prefs,java.xml,jdk.crypto.ec,jdk.unsupported
+        </client.jlink.modules>
+
+        <!--
+            The server does not require JavaFX/java.desktop.
+        -->
+        <server.jlink.modules>
+            java.base,java.logging,java.management,java.naming,java.xml,jdk.crypto.ec,jdk.unsupported
+        </server.jlink.modules>
+
+    </properties>
+
+
+    <!-- ================================================================ -->
+    <!-- Dependency management                                            -->
+    <!-- ================================================================ -->
+
+    <!--
+        Configuration B:
+        Force SimEthereal's old jME transitive dependencies to the versions
+        validated by this prototype.
+    -->
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>com.simsilica</groupId>
+                <artifactId>sim-math</artifactId>
+                <version>${simmath.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jmonkeyengine</groupId>
+                <artifactId>jme3-core</artifactId>
+                <version>${jme.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jmonkeyengine</groupId>
+                <artifactId>jme3-networking</artifactId>
+                <version>${jme.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <!-- ================================================================ -->
+    <!-- Dependencies                                                     -->
+    <!-- ================================================================ -->
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.simsilica</groupId>
+            <artifactId>sim-ethereal</artifactId>
+            <version>${simethereal.version}</version>
+
+            <exclusions>
+
+                <exclusion>
+                    <groupId>com.simsilica</groupId>
+                    <artifactId>sim-math</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.jmonkeyengine</groupId>
+                    <artifactId>jme3-networking</artifactId>
+                </exclusion>
+
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.simsilica</groupId>
+            <artifactId>sim-math</artifactId>
+            <version>${simmath.version}</version>
+
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jmonkeyengine</groupId>
+                    <artifactId>jme3-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-networking</artifactId>
+            <version>${jme.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-core</artifactId>
+            <version>${jme.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+    </dependencies>
+
+
+    <!-- ================================================================ -->
+    <!-- Normal build                                                     -->
+    <!-- ================================================================ -->
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${enforcer.plugin.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+
+                        <configuration>
+                            <rules>
+
+                                <dependencyConvergence/>
+
+                                <requireJavaVersion>
+                                    <version>[21,)</version>
+                                </requireJavaVersion>
+
+                            </rules>
+                        </configuration>
+
+                    </execution>
+                </executions>
+
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec.plugin.version}</version>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${javafx.maven.plugin.version}</version>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+
+    <!-- ================================================================ -->
+    <!-- Profiles                                                         -->
+    <!-- ================================================================ -->
+
+    <profiles>
+
+
+        <!-- ============================================================ -->
+        <!-- Development server                                          -->
+        <!-- ============================================================ -->
+
+        <profile>
+            <id>server</id>
+
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+
+                        <configuration>
+                            <mainClass>${server.main.class}</mainClass>
+                        </configuration>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+
+        </profile>
+
+
+        <!-- ============================================================ -->
+        <!-- Development JavaFX client                                   -->
+        <!-- ============================================================ -->
+
+        <profile>
+            <id>client</id>
+
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.openjfx</groupId>
+                        <artifactId>javafx-maven-plugin</artifactId>
+
+                        <configuration>
+                            <mainClass>${client.main.class}</mainClass>
+                            <commandlineArgs>${client.args}</commandlineArgs>
+                        </configuration>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+
+        </profile>
+
+
+        <!-- ============================================================ -->
+        <!-- Native client                                               -->
+        <!-- ============================================================ -->
+
+        <profile>
+            <id>native-client</id>
+
+            <build>
+                <plugins>
+
+                    <!--
+                        Copy every runtime dependency into the directory that
+                        jpackage will use as its application input.
+                    -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>${dependency.plugin.version}</version>
+
+                        <executions>
+
+                            <execution>
+                                <id>copy-client-runtime-dependencies</id>
+                                <phase>prepare-package</phase>
+
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+
+                                <configuration>
+                                    <includeScope>runtime</includeScope>
+                                    <outputDirectory>
+                                        ${client.package.input}
+                                    </outputDirectory>
+                                    <overWriteIfNewer>true</overWriteIfNewer>
+                                </configuration>
+
+                            </execution>
+
+                        </executions>
+
+                    </plugin>
+
+
+                    <!--
+                        Copy this project's own JAR beside the dependencies.
+                        This happens during verify, after Maven has created the
+                        normal project JAR during package.
+                    -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${resources.plugin.version}</version>
+
+                        <executions>
+
+                            <execution>
+                                <id>copy-client-application-jar</id>
+                                <phase>verify</phase>
+
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+
+                                    <outputDirectory>
+                                        ${client.package.input}
+                                    </outputDirectory>
+
+                                    <resources>
+
+                                        <resource>
+                                            <directory>
+                                                ${project.build.directory}
+                                            </directory>
+
+                                            <filtering>false</filtering>
+
+                                            <includes>
+                                                <include>
+                                                    ${project.build.finalName}.jar
+                                                </include>
+                                            </includes>
+
+                                        </resource>
+
+                                    </resources>
+
+                                </configuration>
+
+                            </execution>
+
+                        </executions>
+
+                    </plugin>
+
+
+                    <!--
+                        Build the trimmed runtime and then package the client.
+                    -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec.plugin.version}</version>
+
+                        <executions>
+
+                            <!-- ============================= -->
+                            <!-- jlink client runtime          -->
+                            <!-- ============================= -->
+
+                            <execution>
+                                <id>jlink-client-runtime</id>
+                                <phase>verify</phase>
+
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+
+                                <configuration>
+
+                                    <executable>
+                                        ${java.home}/bin/jlink
+                                    </executable>
+
+                                    <arguments>
+
+                                        <argument>--add-modules</argument>
+                                        <argument>
+                                            ${client.jlink.modules}
+                                        </argument>
+
+                                        <argument>--strip-debug</argument>
+
+                                        <argument>--no-header-files</argument>
+
+                                        <argument>--no-man-pages</argument>
+
+                                        <argument>--compress</argument>
+                                        <argument>zip-6</argument>
+
+                                        <argument>--output</argument>
+                                        <argument>
+                                            ${client.runtime.image}
+                                        </argument>
+
+                                    </arguments>
+
+                                </configuration>
+
+                            </execution>
+
+
+                            <!-- ============================= -->
+                            <!-- jpackage client               -->
+                            <!-- ============================= -->
+
+                            <execution>
+                                <id>jpackage-client</id>
+                                <phase>verify</phase>
+
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+
+                                <configuration>
+
+                                    <executable>
+                                        ${java.home}/bin/jpackage
+                                    </executable>
+
+                                    <arguments>
+
+                                        <argument>--type</argument>
+                                        <argument>${jpackage.type}</argument>
+
+                                        <argument>--dest</argument>
+                                        <argument>
+                                            ${project.build.directory}
+                                        </argument>
+
+                                        <argument>--name</argument>
+                                        <argument>
+                                            ${client.native.name}
+                                        </argument>
+
+                                        <argument>--app-version</argument>
+                                        <argument>
+                                            ${jpackage.app.version}
+                                        </argument>
+
+                                        <argument>--vendor</argument>
+                                        <argument>${jpackage.vendor}</argument>
+
+                                        <argument>--input</argument>
+                                        <argument>
+                                            ${client.package.input}
+                                        </argument>
+
+                                        <argument>--main-jar</argument>
+                                        <argument>
+                                            ${project.build.finalName}.jar
+                                        </argument>
+
+                                        <argument>--main-class</argument>
+                                        <argument>
+                                            ${client.launcher.class}
+                                        </argument>
+
+                                        <argument>--runtime-image</argument>
+                                        <argument>
+                                            ${client.runtime.image}
+                                        </argument>
+
+                                    </arguments>
+
+                                </configuration>
+
+                            </execution>
+
+                        </executions>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+
+        </profile>
+
+
+        <!-- ============================================================ -->
+        <!-- Native server                                               -->
+        <!-- ============================================================ -->
+
+        <profile>
+            <id>native-server</id>
+
+            <build>
+                <plugins>
+
+                    <!--
+                        The prototype server currently shares the same Maven
+                        artifact as the client, so its runtime dependencies are
+                        copied from the same dependency graph.
+
+                        The server's jlink image itself does not include
+                        JavaFX JDK modules because ServerMain never uses them.
+                    -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>${dependency.plugin.version}</version>
+
+                        <executions>
+
+                            <execution>
+                                <id>copy-server-runtime-dependencies</id>
+                                <phase>prepare-package</phase>
+
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+
+                                <configuration>
+                                    <includeScope>runtime</includeScope>
+                                    <outputDirectory>
+                                        ${server.package.input}
+                                    </outputDirectory>
+                                    <overWriteIfNewer>true</overWriteIfNewer>
+                                </configuration>
+
+                            </execution>
+
+                        </executions>
+
+                    </plugin>
+
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${resources.plugin.version}</version>
+
+                        <executions>
+
+                            <execution>
+                                <id>copy-server-application-jar</id>
+                                <phase>verify</phase>
+
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+
+                                    <outputDirectory>
+                                        ${server.package.input}
+                                    </outputDirectory>
+
+                                    <resources>
+
+                                        <resource>
+                                            <directory>
+                                                ${project.build.directory}
+                                            </directory>
+
+                                            <filtering>false</filtering>
+
+                                            <includes>
+                                                <include>
+                                                    ${project.build.finalName}.jar
+                                                </include>
+                                            </includes>
+
+                                        </resource>
+
+                                    </resources>
+
+                                </configuration>
+
+                            </execution>
+
+                        </executions>
+
+                    </plugin>
+
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec.plugin.version}</version>
+
+                        <executions>
+
+                            <!-- ============================= -->
+                            <!-- jlink server runtime          -->
+                            <!-- ============================= -->
+
+                            <execution>
+                                <id>jlink-server-runtime</id>
+                                <phase>verify</phase>
+
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+
+                                <configuration>
+
+                                    <executable>
+                                        ${java.home}/bin/jlink
+                                    </executable>
+
+                                    <arguments>
+
+                                        <argument>--add-modules</argument>
+                                        <argument>
+                                            ${server.jlink.modules}
+                                        </argument>
+
+                                        <argument>--strip-debug</argument>
+
+                                        <argument>--no-header-files</argument>
+
+                                        <argument>--no-man-pages</argument>
+
+                                        <argument>--compress</argument>
+                                        <argument>zip-6</argument>
+
+                                        <argument>--output</argument>
+                                        <argument>
+                                            ${server.runtime.image}
+                                        </argument>
+
+                                    </arguments>
+
+                                </configuration>
+
+                            </execution>
+
+
+                            <!-- ============================= -->
+                            <!-- jpackage server               -->
+                            <!-- ============================= -->
+
+                            <execution>
+                                <id>jpackage-server</id>
+                                <phase>verify</phase>
+
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+
+                                <configuration>
+
+                                    <executable>
+                                        ${java.home}/bin/jpackage
+                                    </executable>
+
+                                    <arguments>
+
+                                        <argument>--type</argument>
+                                        <argument>${jpackage.type}</argument>
+
+                                        <argument>--dest</argument>
+                                        <argument>
+                                            ${project.build.directory}
+                                        </argument>
+
+                                        <argument>--name</argument>
+                                        <argument>
+                                            ${server.native.name}
+                                        </argument>
+
+                                        <argument>--app-version</argument>
+                                        <argument>
+                                            ${jpackage.app.version}
+                                        </argument>
+
+                                        <argument>--vendor</argument>
+                                        <argument>${jpackage.vendor}</argument>
+
+                                        <argument>--input</argument>
+                                        <argument>
+                                            ${server.package.input}
+                                        </argument>
+
+                                        <argument>--main-jar</argument>
+                                        <argument>
+                                            ${project.build.finalName}.jar
+                                        </argument>
+
+                                        <argument>--main-class</argument>
+                                        <argument>
+                                            ${server.main.class}
+                                        </argument>
+
+                                        <argument>--runtime-image</argument>
+                                        <argument>
+                                            ${server.runtime.image}
+                                        </argument>
+
+                                        <!--
+                                            Current target environment is
+                                            Windows. Keep the server attached
+                                            to a console so status/stats/error
+                                            output remains visible.
+                                        -->
+                                        <argument>--win-console</argument>
+
+                                    </arguments>
+
+                                </configuration>
+
+                            </execution>
+
+                        </executions>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+
+        </profile>
+
+    </profiles>
+
+</project>

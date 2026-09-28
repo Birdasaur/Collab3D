@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+
+    <action>
+        <actionName>run</actionName>
+
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+
+        <goals>
+            <goal>clean</goal>
+            <goal>javafx:run</goal>
+        </goals>
+
+        <properties>
+            <exec.mainClass>com.example.collab3d.client.ClientMain</exec.mainClass>
+            <exec.executable>java</exec.executable>
+            <exec.vmArgs></exec.vmArgs>
+            <javafx.run.args>--host=10.103.73.16 --tcpPort=6143 --udpPort=6144 --name=Client-A</javafx.run.args>
+        </properties>
+    </action>
+
+
+    <action>
+        <actionName>debug</actionName>
+
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+
+        <goals>
+            <goal>clean</goal>
+            <goal>javafx:run</goal>
+        </goals>
+
+        <properties>
+            <exec.mainClass>com.example.collab3d.client.ClientMain</exec.mainClass>
+            <exec.executable>java</exec.executable>
+            <exec.vmArgs></exec.vmArgs>
+
+            <jpda.listen>true</jpda.listen>
+
+            <javafx.run.args>--host=localhost --tcpPort=6143 --udpPort=6144 --name=Client-A</javafx.run.args>
+        </properties>
+    </action>
+
+
+    <action>
+        <actionName>profile</actionName>
+
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+
+        <goals>
+            <goal>clean</goal>
+            <goal>javafx:run</goal>
+        </goals>
+
+        <properties>
+            <exec.mainClass>com.example.collab3d.client.ClientMain</exec.mainClass>
+            <exec.executable>java</exec.executable>
+            <exec.vmArgs></exec.vmArgs>
+            <javafx.run.args>--host=localhost --tcpPort=6143 --udpPort=6144 --name=Client-A</javafx.run.args>
+        </properties>
+    </action>
+
+</actions>
